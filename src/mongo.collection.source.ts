@@ -6,6 +6,7 @@ import {
   ObjectId,
   OptionalUnlessRequiredId,
   TransactionOptions,
+  UpdateResult,
 } from 'mongodb';
 import { MongoSource } from './mongo.source';
 import {
@@ -21,6 +22,7 @@ import {
   DataSourceError,
   OperationStatus,
   RemoveStats,
+  UpdateMethod,
   UpdateStats,
   log,
 } from '@alien-worlds/api-core';
@@ -198,8 +200,21 @@ export class MongoCollectionSource<T extends Document = Document>
         throw new BulkUpdateOperationsError();
       }
 
-      const { filter, update, options } = query;
-      const updateResult = await this.collection.updateMany(filter, update, options);
+      const { filter, update, options, method } = query;
+      let updateResult: UpdateResult;
+
+      if (method === UpdateMethod.UpdateOne) {
+        updateResult = await this.collection.updateOne(filter, update, options);
+      } else {
+        const updateManyResult = await this.collection.updateMany(
+          filter,
+          update,
+          options
+        );
+
+        updateResult = updateManyResult as UpdateResult;
+      }
+
       const { matchedCount, modifiedCount, upsertedCount, upsertedId } = updateResult;
 
       return {

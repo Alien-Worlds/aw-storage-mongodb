@@ -1,6 +1,13 @@
 import { ConfigVars } from '@alien-worlds/api-core';
 import { MongoConfig } from './mongo.types';
 
+/**
+ * Builds a MongoDB configuration object based on the provided configuration variables.
+ *
+ * @param {ConfigVars} configVars - The configuration variables object.
+ * @param {string} [prefix=''] - The prefix to prepend to the configuration variable names.
+ * @returns {MongoConfig} The MongoDB configuration object.
+ */
 export const buildMongoConfig = (configVars: ConfigVars, prefix = ''): MongoConfig => {
   const p = prefix
     ? prefix.endsWith('_')

@@ -1,3 +1,4 @@
+import { UpdateMethod } from '@alien-worlds/api-core';
 import {
   AggregateOptions,
   CountDocumentsOptions,
@@ -27,6 +28,7 @@ export type MongoUpdateQueryParams<T = unknown> = {
   filter: Filter<T>;
   update: UpdateFilter<T>;
   options?: UpdateOptions;
+  method?: UpdateMethod;
 };
 
 export type MongoCountQueryParams<T = unknown> = {

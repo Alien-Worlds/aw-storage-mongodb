@@ -2,9 +2,9 @@ import { AnyBulkWriteOperation, Db, MongoClient, MongoError } from 'mongodb';
 import { MongoConfig } from './mongo.types';
 
 /**
- * This function builds a MongoDB URL from a MongoConfig object.
- * It takes the host, user, password, port, authMechanism and ssl
- * properties of the MongoConfig object and uses them to build the URL.
+ * Builds a MongoDB URL from a MongoConfig object.
+ * @param {MongoConfig} config - The configuration object containing connection details.
+ * @returns {string} The constructed MongoDB URL.
  */
 export const buildMongoUrl = (config: MongoConfig) => {
   const { user, password, authMechanism, ssl, replicaSet, srv, authSource } = config;
@@ -55,10 +55,10 @@ export const buildMongoUrl = (config: MongoConfig) => {
 };
 
 /**
- *
- * @param {MongoClient} client
- * @param {string} name
- * @returns {Db}
+ * Gets a database object from a MongoClient instance.
+ * @param {MongoClient} client - The MongoClient instance to use.
+ * @param {string} name - The name of the database to retrieve.
+ * @returns {Db} The database object.
  */
 export const getDatabase = (client: MongoClient, name: string): Db => client.db(name);
 
@@ -80,6 +80,11 @@ const specials = [
   '$bit',
 ];
 
+/**
+ * Checks if an object contains special MongoDB update operators.
+ * @param {unknown} data - The data to check.
+ * @returns {boolean} True if the data contains special keys, false otherwise.
+ */
 export const containsSpecialKeys = (data: unknown): boolean => {
   try {
     const keys = Object.keys(data);
@@ -96,14 +101,29 @@ export const containsSpecialKeys = (data: unknown): boolean => {
   }
 };
 
+/**
+ * Type guard to check if a given value conforms to the MongoConfig type.
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is a MongoConfig object, false otherwise.
+ */
 export const isMongoConfig = (value: unknown): value is MongoConfig => {
   return value && Array.isArray(value['hosts']) && typeof value['database'] === 'string';
 };
 
+/**
+ * Checks if an error is a MongoDB duplicate error.
+ * @param {Error} error - The error to check.
+ * @returns {boolean} True if the error is a duplicate error, false otherwise.
+ */
 export const isDuplicateError = (error: Error): boolean => {
   return error instanceof MongoError && error.code === 11000;
 };
 
+/**
+ * Extracts the duplicated data IDs from a MongoDB error message.
+ * @param {Error} error - The error to extract from.
+ * @returns {string[]} An array of duplicated data IDs.
+ */
 export const getDuplicatedDataIds = (error: Error): string[] => {
   const errorMessage = error.message || '';
   const matches = errorMessage.match(/"([^"]+)"/g);
@@ -113,10 +133,20 @@ export const getDuplicatedDataIds = (error: Error): string[] => {
   return [];
 };
 
+/**
+ * Checks if an error is a MongoDB invalid data error.
+ * @param {Error} error - The error to check.
+ * @returns {boolean} True if the error is an invalid data error, false otherwise.
+ */
 export const isInvalidDataError = (error: Error): boolean => {
   return error instanceof MongoError && error.code === 121;
 };
 
+/**
+ * Checks if a list of operations constitutes a bulk update.
+ * @param {AnyBulkWriteOperation<T>[]} operations - The list of operations to check.
+ * @returns {boolean} True if the operations constitute a bulk update, false otherwise.
+ */
 export const isBulkUpdate = <T>(operations: AnyBulkWriteOperation<T>[]): boolean => {
   let result = true;
   operations.forEach(operation => {

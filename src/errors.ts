@@ -44,3 +44,17 @@ export class BulkUpdateOperationsError extends Error {
     );
   }
 }
+
+export class UnknownUpdateMethodError extends Error {
+  constructor(index: number) {
+    super(`Unknown update method with index "${index}".`);
+  }
+}
+
+export class InconsistentUpdateParamsError extends Error {
+  constructor(updates: number, where: number, methods: number) {
+    super(
+      `The number of parameters does not match. Number of updates: ${updates}, where clauses: ${where}, method types: ${methods}`
+    );
+  }
+}
