@@ -15,12 +15,14 @@ export const buildMongoUrl = (config: MongoConfig) => {
     url += `${user}:${password}@`;
     options['authMechanism'] = authMechanism || 'DEFAULT';
   }
-  const hosts = config.hosts || ['localhost'];
-  const ports = config.ports || ['27017'];
-  const hostsPortsDiff = hosts.length - ports.length;
+  const hosts = config?.hosts?.length ? config.hosts : ['localhost'];
+  const ports = config?.ports?.length ? config.ports : ['27017'];
   const defaultPort = ports[0];
+
+  let hostsPortsDiff = hosts.length - ports.length;
   while (hostsPortsDiff > 0) {
     ports.push(defaultPort);
+    hostsPortsDiff = hosts.length - ports.length;
   }
 
   const hostsAndPorts = hosts.map((host, i) => {

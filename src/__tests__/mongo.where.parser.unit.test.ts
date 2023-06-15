@@ -1,5 +1,11 @@
 import { Where } from '@alien-worlds/api-core';
 import { MongoWhereParser } from '../mongo.where.parser';
+import { Long } from 'mongodb';
+
+class UserMockClass {
+  name: string;
+  cardId: bigint;
+}
 
 describe('MongoWhereParser', () => {
   describe('parse', () => {
@@ -32,6 +38,39 @@ describe('MongoWhereParser', () => {
       expect(result).toEqual(expectedQuery);
     });
 
+    it('should parse Where object bound to the class', () => {
+      const where = Where.bind<UserMockClass>().props().name.isEq('Neo');
+      const result = MongoWhereParser.parse(where);
+
+      expect(result).toEqual({
+        name: { $eq: 'Neo' },
+      });
+    });
+
+    it('should parse Where object and use mapper', () => {
+      const where = Where.bind<UserMockClass>().props().cardId.isEq(10);
+      const mapper = {
+        getEntityKeyMapping: (key: string) => ({
+          key: 'card_id',
+          mapper: (value: bigint) => Long.fromBigInt(value),
+        }),
+      } as any;
+      const result = MongoWhereParser.parse(where, mapper);
+
+      expect(result).toEqual({
+        card_id: { $eq: Long.fromBigInt(10n) },
+      });
+    });
+
+    it('should parse Where object with between operatpr', () => {
+      const where = new Where().valueOf('age').isBetween(18, 24);
+      const result = MongoWhereParser.parse(where);
+
+      expect(result).toEqual({
+        age: { $gte: 18, $lte: 24 },
+      });
+    });
+
     it('should parse nested Where object with logical operators', () => {
       const where = Where.and([
         new Where().valueOf('name').isEq('John').valueOf('age').isGt(25),
@@ -44,7 +83,7 @@ describe('MongoWhereParser', () => {
           { department: { $eq: 'Sales' }, salary: { $lte: 5000 } },
         ],
       };
-      
+
       const result = MongoWhereParser.parse(where);
 
       expect(result).toEqual(expectedQuery);
@@ -52,7 +91,7 @@ describe('MongoWhereParser', () => {
 
     it('should throw an error for unsupported operators', () => {
       const where = new Where();
-      (where as any).chain['name'] = { operator: NaN, value: 'unknown' };
+      (where as any).chain['name'] = [{ operator: NaN, value: 'unknown' }];
       expect(() => {
         MongoWhereParser.parse(where);
       }).toThrowError('Unsupported operator "undefined".');
@@ -60,7 +99,7 @@ describe('MongoWhereParser', () => {
 
     it('should throw an error for unknown operator in nested Where object', () => {
       const where = new Where();
-      (where as any).chain['name'] = { operator: NaN, value: 'unknown' };
+      (where as any).chain['name'] = [{ operator: NaN, value: 'unknown' }];
       expect(() => {
         MongoWhereParser.parse({
           foo: [where],

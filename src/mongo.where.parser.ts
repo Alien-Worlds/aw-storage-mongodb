@@ -1,4 +1,5 @@
 import {
+  Mapper,
   UnsupportedOperatorError,
   Where,
   WhereClause,
@@ -24,6 +25,7 @@ export class MongoWhereParser {
     [WhereOperator.isGte]: '$gte',
     [WhereOperator.isInRange]: '$in',
     [WhereOperator.isNotInRange]: '$nin',
+    [WhereOperator.isBetween]: { $gte: NaN, $lte: NaN },
     [WhereOperator.isIn]: '$in',
     [WhereOperator.isNotIn]: '$nin',
     [WhereOperator.isTrue]: '$eq',
@@ -46,42 +48,57 @@ export class MongoWhereParser {
    * @returns {T} The parsed MongoDB filter object.
    * @throws {Error} If the Where clause contains an unsupported operator.
    */
-  public static parse<T = Filter<unknown>>(where: Where | unknown): T {
+  public static parse<T = Filter<unknown>>(where: Where | unknown, mapper?: Mapper): T {
     const query = {} as T;
     if (where instanceof Where && where.isRaw) {
       return where.result as T;
     } else if (where instanceof Where && where.isRaw === false) {
       const chain = where.result;
-      for (const key in chain) {
-        const whereClause = chain[key] as WhereClause;
-        const mongoOperator = MongoWhereParser.operatorMap[whereClause.operator];
-        if (!mongoOperator) {
-          throw new UnsupportedOperatorError(WhereOperator[whereClause.operator]);
-        }
+      for (const chainKey in chain) {
+        const { key: mongoKey, mapper: mongoValueParser } =
+          mapper?.getEntityKeyMapping(chainKey) || {};
+        const key = mongoKey || chainKey;
 
-        if (
-          whereClause.operator === WhereOperator.isEmpty ||
-          whereClause.operator === WhereOperator.isNotEmpty
-        ) {
-          query[key] = mongoOperator;
-        } else {
-          query[key] = { [mongoOperator]: whereClause.value };
-          if (whereClause.operator === WhereOperator.isNull) {
-            query[key] = { [mongoOperator]: null };
-          }
+        const whereClauses = chain[chainKey] as WhereClause[];
+        for (const whereClause of whereClauses) {
+          const queryPart = MongoWhereParser.parseClause(whereClause, mongoValueParser);
+          const keyQyery = query[key] ? query[key] : {};
+          query[key] = { ...keyQyery, ...queryPart };
         }
       }
     } else {
       const operator = Object.keys(where)[0];
-      const values = where[operator];
+      const wheres = where[operator];
 
       if (operator !== 'and' && operator !== 'or') {
         throw new UnsupportedOperatorError(operator);
       }
 
-      query['$' + operator] = values.map(this.parse);
+      query['$' + operator] = wheres.map(where => this.parse(where, mapper));
     }
 
     return query;
+  }
+
+  private static parseClause(
+    whereClause: WhereClause,
+    mongoValueParser?: (value: unknown) => unknown
+  ) {
+    const { operator, value } = whereClause;
+    const mongoOperator = MongoWhereParser.operatorMap[operator];
+    if (!mongoOperator) {
+      throw new UnsupportedOperatorError(WhereOperator[operator]);
+    }
+    if (operator === WhereOperator.isEmpty || operator === WhereOperator.isNotEmpty) {
+      return mongoOperator;
+    } else if (operator === WhereOperator.isBetween) {
+      return mongoValueParser
+        ? { $gte: mongoValueParser(value[0]), $lte: mongoValueParser(value[1]) }
+        : { $gte: value[0], $lte: value[1] };
+    } else if (operator === WhereOperator.isNull) {
+      return { [mongoOperator]: null };
+    } else {
+      return { [mongoOperator]: mongoValueParser ? mongoValueParser(value) : value };
+    }
   }
 }
