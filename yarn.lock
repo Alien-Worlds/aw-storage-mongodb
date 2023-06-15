@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alien-worlds/api-core@^0.0.125":
-  version "0.0.125"
-  resolved "https://npm.pkg.github.com/download/@alien-worlds/api-core/0.0.125/386abf1c615f114905ec478516acd3fba08bbbac#386abf1c615f114905ec478516acd3fba08bbbac"
-  integrity sha512-dYrAIqIgpGXA/i+AU9sMGS/CslizxKDsnuhSrD86VxI8iP1OR1+D+6T4D+5YUXmO05Iw2a166UNwd/Xyrq3b5Q==
+"@alien-worlds/api-core@^0.0.126":
+  version "0.0.126"
+  resolved "https://npm.pkg.github.com/download/@alien-worlds/api-core/0.0.126/9552c84d6c965990e63a781faf4ddc385bf5a06b#9552c84d6c965990e63a781faf4ddc385bf5a06b"
+  integrity sha512-fK26MdfX4Pu9O1gfBAt9qYYgz3F208gDqJJQUz4vXnfoOCU5AKF8Idnkc3GZYONhlPmmcZFYIWHsNqD2YWzTLw==
   dependencies:
     eosjs "^22.1.0"
     inversify "^6.0.1"
