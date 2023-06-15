@@ -3,6 +3,7 @@ import {
   AggregationParams,
   CountParams,
   FindParams,
+  Mapper,
   QueryBuilders,
   RemoveParams,
   UpdateMethod,
@@ -25,13 +26,25 @@ import { InconsistentUpdateParamsError, UnknownUpdateMethodError } from './error
  */
 export class MongoQueryBuilders<DocumentType = unknown> implements QueryBuilders {
   /**
+   * Constructs a new instance of the MongoQueryBuilders class.
+   *
+   * If a Mapper instance is provided, it can be used to convert entity keys
+   * and values into a format suitable for MongoDB. This can be especially useful
+   * in situations where the case of keys or format of values in the original entity
+   * doesn't match MongoDB's requirements.
+   *
+   * @param {Mapper} [mapper] - An optional Mapper instance for entity key and value conversion.
+   */
+  constructor(private mapper?: Mapper) {}
+
+  /**
    * Builds a find query for MongoDB.
    * @param {FindParams} params - The parameters for the find query.
    * @returns {MongoFindQueryParams} The find query parameters.
    */
   public buildFindQuery(params: FindParams): MongoFindQueryParams {
     const { limit, offset, sort, where } = params;
-    const filter = where ? MongoWhereParser.parse(where) : {};
+    const filter = where ? MongoWhereParser.parse(where, this.mapper) : {};
     const options: MongoDB.FindOptions = {};
 
     if (limit) {
@@ -56,7 +69,7 @@ export class MongoQueryBuilders<DocumentType = unknown> implements QueryBuilders
    */
   public buildCountQuery(params: CountParams): MongoCountQueryParams {
     const { sort, where } = params;
-    const filter = where ? MongoWhereParser.parse(where) : {};
+    const filter = where ? MongoWhereParser.parse(where, this.mapper) : {};
     const options: MongoDB.FindOptions = {};
 
     if (sort) {
@@ -145,7 +158,7 @@ export class MongoQueryBuilders<DocumentType = unknown> implements QueryBuilders
    */
   public buildRemoveQuery(params: RemoveParams): MongoDeleteQueryParams {
     const { where } = params;
-    const filter = where ? MongoWhereParser.parse(where) : {};
+    const filter = where ? MongoWhereParser.parse(where, this.mapper) : {};
     const options: MongoDB.DeleteOptions = {};
 
     return { filter, options };
@@ -168,7 +181,7 @@ export class MongoQueryBuilders<DocumentType = unknown> implements QueryBuilders
 
     if (where) {
       pipeline.push({
-        $match: MongoWhereParser.parse(where),
+        $match: MongoWhereParser.parse(where, this.mapper),
       });
     }
 
