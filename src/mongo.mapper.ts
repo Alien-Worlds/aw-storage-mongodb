@@ -1,4 +1,4 @@
-import { Mapper } from '@alien-worlds/api-core';
+import { Mapper, MapperImpl } from '@alien-worlds/api-core';
 import { MongoDB } from './mongo.types';
 
 /**
@@ -9,7 +9,7 @@ import { MongoDB } from './mongo.types';
  * @template EntityType - The domain entity type used in the business logic layer.
  * @template ModelType - The document type used in the database layer.
  */
-export class MongoMapper<EntityType = unknown, ModelType = unknown> extends Mapper<
+export class MongoMapper<EntityType = unknown, ModelType = unknown> extends MapperImpl<
   EntityType,
   ModelType
 > {
