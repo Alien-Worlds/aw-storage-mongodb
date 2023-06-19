@@ -1,4 +1,4 @@
-import { Mapper, MapperImpl } from '@alien-worlds/api-core';
+import { MapperImpl } from '@alien-worlds/api-core';
 import { MongoDB } from './mongo.types';
 
 /**
