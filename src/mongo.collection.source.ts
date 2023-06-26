@@ -132,7 +132,9 @@ export class MongoCollectionSource<T extends Document = Document>
    */
   public async find(query?: MongoFindQueryParams<T>): Promise<T[]> {
     try {
-      const cursor = this.collection.find<T>(query);
+      const filter = query?.filter || {};
+      const options = query?.options || {};
+      const cursor = this.collection.find<T>(filter, options);
       const list = await cursor.toArray();
       return list;
     } catch (error) {
@@ -147,7 +149,9 @@ export class MongoCollectionSource<T extends Document = Document>
    */
   public async count(query?: MongoCountQueryParams<T>): Promise<number> {
     try {
-      const count = await this.collection.countDocuments(query || {});
+      const filter = query?.filter || {};
+      const options = query?.options || {};
+      const count = await this.collection.countDocuments(filter, options);
       return count;
     } catch (error) {
       this.throwDataSourceError(error);
@@ -252,9 +256,11 @@ export class MongoCollectionSource<T extends Document = Document>
    * @param {MongoDeleteQueryParams} query - The query parameters.
    * @returns {Promise<RemoveStats>} - A promise that resolves to the remove statistics.
    */
-  public async remove(query: MongoDeleteQueryParams): Promise<RemoveStats> {
+  public async remove(query: MongoDeleteQueryParams<T>): Promise<RemoveStats> {
     try {
-      const { acknowledged, deletedCount } = await this.collection.deleteMany(query);
+      const { acknowledged, deletedCount } = await this.collection.deleteMany(
+        query.filter
+      );
       const status =
         acknowledged && deletedCount > 0
           ? OperationStatus.Success
