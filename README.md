@@ -138,5 +138,6 @@ We encourage contributions from the community. If you have suggestions or featur
 
 ## License
 
-Storage-MongoDB is [MIT licensed](./LICENSE).
+This project is licensed under the terms of the MIT license. For more information, refer to the [LICENSE](./LICENSE) file.
+
 
