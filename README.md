@@ -30,8 +30,9 @@ If your project relies on MongoDB, `Storage-mongodb` is a great tool to execute 
 
 ## Dependencies
 
-- MongoDB
-- @alien-worlds/api-core
+- [MongoDB](https://github.com/mongodb)
+- [@alien-worlds/api-core](https://github.com/Alien-Worlds/api-core)
+
 
 ## Features
 
