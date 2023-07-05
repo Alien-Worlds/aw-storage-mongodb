@@ -2,14 +2,13 @@
 # yarn lockfile v1
 
 
-"@alien-worlds/api-core@^0.0.151":
-  version "0.0.151"
-  resolved "https://npm.pkg.github.com/download/@alien-worlds/api-core/0.0.151/90f3fda4958c18a705ee34300f47a46f8a3e4f63#90f3fda4958c18a705ee34300f47a46f8a3e4f63"
-  integrity sha512-EkQjZ34F3srCD97b0TE+Lju05pod5gxPlUnezMV9Bq0R1xp0XLGnbSIqpO6Y2UfIJY7PHpFaHWpce+q2rQs4aA==
+"@alien-worlds/api-core@^0.0.153":
+  version "0.0.153"
+  resolved "https://npm.pkg.github.com/download/@alien-worlds/api-core/0.0.153/f1e7ef20596765d910acaba561d557ae39088f7d#f1e7ef20596765d910acaba561d557ae39088f7d"
+  integrity sha512-uuw9ck9CDbMD7hO+SoqUhkSDe75UOLVjs1k01TCQpILbKcyDKrxMg/Cc01jvvegsmffQRwL9nOIYysLS8zdA8Q==
   dependencies:
     inversify "^6.0.1"
-    nanoid "^3.0.0"
-    node-fetch "2"
+    node-fetch "2.6.6"
     reflect-metadata "^0.1.13"
 
 "@ampproject/remapping@^2.2.0":
@@ -2550,11 +2549,6 @@ ms@2.1.2:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-nanoid@^3.0.0:
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
-  integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
-
 natural-compare-lite@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare-lite/-/natural-compare-lite-1.4.0.tgz#17b09581988979fddafe0201e931ba933c96cbb4"
@@ -2565,10 +2559,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-node-fetch@2:
-  version "2.6.11"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
-  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
+node-fetch@2.6.6:
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.6.tgz#1751a7c01834e8e1697758732e9efb6eeadfaf89"
+  integrity sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==
   dependencies:
     whatwg-url "^5.0.0"
 
