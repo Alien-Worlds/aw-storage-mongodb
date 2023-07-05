@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Mapper,
   UnsupportedOperatorError,
@@ -53,7 +54,9 @@ export class MongoWhereParser {
     if (where instanceof Where && where.isRaw) {
       return where.result as T;
     } else if (where instanceof Where && where.isRaw === false) {
-      const chain = where.result;
+      const {
+        result: { groups, ...chain },
+      } = where;
       for (const chainKey in chain) {
         const { key: mongoKey, mapper: mongoValueParser } =
           mapper?.getEntityKeyMapping(chainKey) || {};

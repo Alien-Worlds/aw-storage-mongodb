@@ -134,6 +134,7 @@ export class MongoCollectionSource<T extends Document = Document>
     try {
       const filter = query?.filter || {};
       const options = query?.options || {};
+      console.log('>>', {query, filter, options})
       const cursor = this.collection.find<T>(filter, options);
       const list = await cursor.toArray();
       return list;
