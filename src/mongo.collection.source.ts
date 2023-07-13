@@ -1,4 +1,13 @@
 import {
+  DataSource,
+  DataSourceError,
+  log,
+  OperationStatus,
+  RemoveStats,
+  UpdateMethod,
+  UpdateStats,
+} from '@alien-worlds/api-core';
+import {
   AnyBulkWriteOperation,
   ClientSession,
   Collection,
@@ -8,6 +17,8 @@ import {
   TransactionOptions,
   UpdateResult,
 } from 'mongodb';
+
+import { BulkUpdateOperationsError, PendingSessionError, SessionError } from './errors';
 import { MongoSource } from './mongo.source';
 import {
   CollectionOptions,
@@ -18,21 +29,11 @@ import {
   MongoUpdateQueryParams,
 } from './mongo.types';
 import {
-  DataSource,
-  DataSourceError,
-  OperationStatus,
-  RemoveStats,
-  UpdateMethod,
-  UpdateStats,
-  log,
-} from '@alien-worlds/api-core';
-import {
   getDuplicatedDataIds,
   isBulkUpdate,
   isDuplicateError,
   isInvalidDataError,
 } from './utils';
-import { BulkUpdateOperationsError, PendingSessionError, SessionError } from './errors';
 
 export type ObjectWithId = { _id: ObjectId };
 
@@ -134,7 +135,6 @@ export class MongoCollectionSource<T extends Document = Document>
     try {
       const filter = query?.filter || {};
       const options = query?.options || {};
-      console.log('>>', {query, filter, options})
       const cursor = this.collection.find<T>(filter, options);
       const list = await cursor.toArray();
       return list;
