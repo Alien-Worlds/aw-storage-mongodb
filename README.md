@@ -1,4 +1,4 @@
-# Storage-mongodb
+# storage-mongodb
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@
 
 ## Installation
 
-To install the `Storage-mongodb` package, use the following command:
+To install the `storage-mongodb` package, use the following command:
 
 ```bash
 yarn add @alien-worlds/storage-mongodb
@@ -24,15 +24,14 @@ yarn add @alien-worlds/storage-mongodb
 
 ## Introduction
 
-`Storage-mongodb` is a versatile package designed as part of our API building components and history-tools. The goal is to decouple our modules and provide reusable MongoDB components that can be plugged into projects as needed, rather than relying on a monolithic structure.
+`storage-mongodb` is a versatile package designed as part of our API building components and history-tools. The goal is to decouple our modules and provide reusable MongoDB components that can be plugged into projects as needed, rather than relying on a monolithic structure.
 
-If your project relies on MongoDB, `Storage-mongodb` is a great tool to execute commands built in the business domain. It's built upon the interfaces and types from the `@alien-worlds/api-core` package and provides a MongoDB implementation.
+If your project relies on MongoDB, `storage-mongodb` is a great tool to execute commands built in the business domain. It's built upon the interfaces and types from the `@alien-worlds/api-core` package and provides a MongoDB implementation.
 
 ## Dependencies
 
 - [MongoDB](https://github.com/mongodb)
 - [@alien-worlds/api-core](https://github.com/Alien-Worlds/api-core)
-
 
 ## Features
 
@@ -56,6 +55,7 @@ const planetRepository = new PlanetRepositoryImpl(
 );
 
 ```
+
 ### MongoQueryBuilders Class
 
 Represents a MongoDB query builder to construct various types of queries. The methods like `buildFindQuery`, `buildCountQuery`, `buildUpdateQuery` and more take parameters defined in the domain layer in the `@alien-worlds/api-core` and build query parameters suitable for MongoDB. Instances of this class must be used in the repository constructor.
@@ -71,6 +71,7 @@ const planetRepository = new PlanetRepositoryImpl(
 ### MongoSource Class
 
 This is a Facade class that encapsulates the MongoClient and exposes a client and database. It also contains a factory method to create instances. Instances of this class are used in the constructor of all `MongoCollectionSource`. This allows collections to share a client or, if required, use multiple clients.
+
 ```java
 const vars = new ConfigVars();
 const config = buildMongoConfig(vars);
@@ -80,6 +81,7 @@ const mongoSource = await MongoSource.create(config);
 ### MongoWhereParser Class
 
 Contains a static `parse` method for parsing Where clauses and converting them into MongoDB filter objects.
+
 ```java
 // example
 const where = Where.and([
@@ -101,12 +103,14 @@ Generated result:
 ### BuildMongoConfig Function
 
 Builds a MongoDB configuration object based on provided configuration variables.
+
 ```java
 // example
 const vars = new ConfigVars();
 const mongo = buildMongoConfig(vars); // or buildMongoConfig(vars, 'YOUR_PREFIX');
 
 ```
+
 To use this tool you have to set the following environment variables or create an .env file containing the following keys.
 
 ```bash
@@ -121,8 +125,8 @@ To use this tool you have to set the following environment variables or create a
 <your_prefix>MONGO_SSL
 <your_prefix>MONGO_SRV
 ```
-If a prefix is given, it must be included in the variable name. Note that each prefix will be automatically separated from the name by a `_` character if the given key does not end with it.
 
+If a prefix is given, it must be included in the variable name. Note that each prefix will be automatically separated from the name by a `_` character if the given key does not end with it.
 
 ## Additional Tools and Helpers
 
@@ -130,7 +134,7 @@ This package also includes various helper tools such as `buildMongoUrl`, for con
 
 Additionally, it contains standard error classes (`SessionError`, `UnknownUpdateMethodError`, `InconsistentUpdateParamsError`, etc.) and basic types of query params (`MongoFindQueryParams`, `MongoUpdateQueryParams`, etc.).
 
-By using `Storage-mongodb`, you'll have a toolbox at your disposal to quickly and effectively interact with MongoDB, keeping your code clean and efficient.
+By using `storage-mongodb`, you'll have a toolbox at your disposal to quickly and effectively interact with MongoDB, keeping your code clean and efficient.
 
 ## Contributing
 
@@ -139,5 +143,3 @@ We encourage contributions from the community. If you have suggestions or featur
 ## License
 
 This project is licensed under the terms of the MIT license. For more information, refer to the [LICENSE](./LICENSE) file.
-
-
