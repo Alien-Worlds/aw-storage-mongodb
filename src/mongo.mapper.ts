@@ -1,4 +1,4 @@
-import { MapperImpl } from '@alien-worlds/api-core';
+import { MapperImpl, UnknownObject } from '@alien-worlds/api-core';
 import { MongoDB } from './mongo.types';
 
 /**
@@ -23,6 +23,11 @@ export class MongoMapper<EntityType = unknown, ModelType = unknown> extends Mapp
       key: '_id',
       mapper: (value: string) =>
         value && MongoDB.ObjectId.isValid(value) ? new MongoDB.ObjectId(value) : null,
+    });
+
+    this.mappingFromEntity.set('rest', {
+      key: 'rest',
+      mapper: (value: UnknownObject) => value,
     });
   }
 
