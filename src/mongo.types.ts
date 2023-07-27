@@ -1,4 +1,4 @@
-import { UpdateMethod } from '@alien-worlds/api-core';
+import { UpdateMethod } from '@alien-worlds/aw-core';
 import {
   AggregateOptions,
   CountDocumentsOptions,

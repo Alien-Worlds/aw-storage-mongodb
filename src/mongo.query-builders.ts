@@ -8,7 +8,7 @@ import {
   RemoveParams,
   UpdateMethod,
   Where,
-} from '@alien-worlds/api-core';
+} from '@alien-worlds/aw-core';
 import {
   MongoAggregateParams,
   MongoCountQueryParams,

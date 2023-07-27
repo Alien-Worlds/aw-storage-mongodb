@@ -1,4 +1,4 @@
-import { MapperImpl, UnknownObject } from '@alien-worlds/api-core';
+import { MapperImpl, UnknownObject } from '@alien-worlds/aw-core';
 import { MongoDB } from './mongo.types';
 
 /**

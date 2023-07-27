@@ -1,7 +1,7 @@
 import { ClientSession, Collection, ObjectId, TransactionOptions } from 'mongodb';
 import { MongoCollectionSource, ObjectWithId } from '../mongo.collection.source';
 import { MongoSource } from '../mongo.source';
-import { DataSourceError, OperationStatus } from '@alien-worlds/api-core';
+import { DataSourceError, OperationStatus } from '@alien-worlds/aw-core';
 import { BulkUpdateOperationsError } from '../errors';
 import { isBulkUpdate, isDuplicateError, isInvalidDataError } from '../utils';
 

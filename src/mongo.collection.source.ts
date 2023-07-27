@@ -6,7 +6,7 @@ import {
   RemoveStats,
   UpdateMethod,
   UpdateStats,
-} from '@alien-worlds/api-core';
+} from '@alien-worlds/aw-core';
 import {
   AnyBulkWriteOperation,
   ClientSession,

@@ -1,4 +1,4 @@
-import { Where } from '@alien-worlds/api-core';
+import { Where } from '@alien-worlds/aw-core';
 import { MongoWhereParser } from '../mongo.where.parser';
 import { Long } from 'mongodb';
 

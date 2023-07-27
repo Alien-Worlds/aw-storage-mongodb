@@ -1,4 +1,4 @@
-# storage-mongodb
+# aw-storage-mongodb
 
 ## Table of Contents
 
@@ -16,22 +16,22 @@
 
 ## Installation
 
-To install the `storage-mongodb` package, use the following command:
+To install the `aw-storage-mongodb` package, use the following command:
 
 ```bash
-yarn add @alien-worlds/storage-mongodb
+yarn add @alien-worlds/aw-storage-mongodb
 ```
 
 ## Introduction
 
-`storage-mongodb` is a versatile package designed as part of our API building components and history-tools. The goal is to decouple our modules and provide reusable MongoDB components that can be plugged into projects as needed, rather than relying on a monolithic structure.
+`aw-storage-mongodb` is a versatile package designed as part of our API building components and history-tools. The goal is to decouple our modules and provide reusable MongoDB components that can be plugged into projects as needed, rather than relying on a monolithic structure.
 
-If your project relies on MongoDB, `storage-mongodb` is a great tool to execute commands built in the business domain. It's built upon the interfaces and types from the `@alien-worlds/api-core` package and provides a MongoDB implementation.
+If your project relies on MongoDB, `aw-storage-mongodb` is a great tool to execute commands built in the business domain. It's built upon the interfaces and types from the `@alien-worlds/aw-core` package and provides a MongoDB implementation.
 
 ## Dependencies
 
 - [MongoDB](https://github.com/mongodb)
-- [@alien-worlds/api-core](https://github.com/Alien-Worlds/api-core)
+- [@alien-worlds/aw-core](https://github.com/Alien-Worlds/api-core)
 
 ## Features
 
@@ -58,7 +58,7 @@ const planetRepository = new PlanetRepositoryImpl(
 
 ### MongoQueryBuilders Class
 
-Represents a MongoDB query builder to construct various types of queries. The methods like `buildFindQuery`, `buildCountQuery`, `buildUpdateQuery` and more take parameters defined in the domain layer in the `@alien-worlds/api-core` and build query parameters suitable for MongoDB. Instances of this class must be used in the repository constructor.
+Represents a MongoDB query builder to construct various types of queries. The methods like `buildFindQuery`, `buildCountQuery`, `buildUpdateQuery` and more take parameters defined in the domain layer in the `@alien-worlds/aw-core` and build query parameters suitable for MongoDB. Instances of this class must be used in the repository constructor.
 
 ```java
 const planetRepository = new PlanetRepositoryImpl(
@@ -134,7 +134,7 @@ This package also includes various helper tools such as `buildMongoUrl`, for con
 
 Additionally, it contains standard error classes (`SessionError`, `UnknownUpdateMethodError`, `InconsistentUpdateParamsError`, etc.) and basic types of query params (`MongoFindQueryParams`, `MongoUpdateQueryParams`, etc.).
 
-By using `storage-mongodb`, you'll have a toolbox at your disposal to quickly and effectively interact with MongoDB, keeping your code clean and efficient.
+By using `aw-storage-mongodb`, you'll have a toolbox at your disposal to quickly and effectively interact with MongoDB, keeping your code clean and efficient.
 
 ## Contributing
 

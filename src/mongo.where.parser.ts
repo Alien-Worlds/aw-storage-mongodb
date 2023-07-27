@@ -5,7 +5,7 @@ import {
   Where,
   WhereClause,
   WhereOperator,
-} from '@alien-worlds/api-core';
+} from '@alien-worlds/aw-core';
 import { Filter } from 'mongodb';
 
 /**

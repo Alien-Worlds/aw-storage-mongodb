@@ -1,4 +1,4 @@
-import { UpdateMethod, Where } from '@alien-worlds/api-core';
+import { UpdateMethod, Where } from '@alien-worlds/aw-core';
 import { MongoQueryBuilders } from '../mongo.query-builders'; // Replace with the actual module path
 
 describe('MongoQueryBuilders', () => {

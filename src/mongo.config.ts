@@ -1,4 +1,4 @@
-import { ConfigVars } from '@alien-worlds/api-core';
+import { ConfigVars } from '@alien-worlds/aw-core';
 import { MongoConfig } from './mongo.types';
 
 /**
