@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alien-worlds/aw-core@^0.0.3":
-  version "0.0.3"
-  resolved "https://npm.pkg.github.com/download/@alien-worlds/aw-core/0.0.3/1b5af094fced3d97824d909190d446c116aa6bec#1b5af094fced3d97824d909190d446c116aa6bec"
-  integrity sha512-5aWRA7svi9qWEZO0ROJNUNGnw/KftSPLkcekCjm5ecB0ufMo01eI68A+RlufuCbLaeTKH8K8pKWFgycSxGRBwQ==
+"@alien-worlds/aw-core@^0.0.5":
+  version "0.0.5"
+  resolved "https://npm.pkg.github.com/download/@alien-worlds/aw-core/0.0.5/0c1e8e73bba6896dbb7c9579e9561fad38ea2090#0c1e8e73bba6896dbb7c9579e9561fad38ea2090"
+  integrity sha512-DXFb6UPmo4uhcokBNBQSNb3vRlW4kUS9GwS30y2KXvtkhL+jIS8TX65/SCwUkxOTZvvpeNCIuzKRp0HRmMQ+9A==
   dependencies:
     inversify "^6.0.1"
     node-fetch "2.6.6"
