@@ -10,7 +10,7 @@ jest.mock('../mongo.source');
 jest.mock('../utils', () => ({
   isDuplicateError: jest.fn(),
   isInvalidDataError: jest.fn(),
-  getDuplicatedDataIds: jest.fn(),
+  getDuplicatedDocumentIds: jest.fn(),
   isBulkUpdate: jest.fn(),
 }));
 
@@ -263,7 +263,7 @@ describe('MongoCollectionSource', () => {
 
       const result = await mongoCollectionSource.insert(documents);
 
-      expect(collection.insertMany).toHaveBeenCalledWith(documents);
+      expect(collection.insertMany).toHaveBeenCalledWith(documents, { ordered: true });
       expect(result.length).toEqual(2);
       expect(result[0]).toHaveProperty('_id', insertResult.insertedIds[0]);
       expect(result[1]).toHaveProperty('_id', insertResult.insertedIds[1]);
@@ -448,9 +448,7 @@ describe('MongoCollectionSource', () => {
         'createInvalidDataError'
       );
       createInvalidDataErrorSpy.mockReturnValue(
-        DataSourceError.createInvalidDataError(error, {
-          data: [],
-        })
+        DataSourceError.createInvalidDataError(error)
       );
       expect(() => {
         (mongoCollectionSource as any).throwDataSourceError(error);
