@@ -38,6 +38,6 @@
   },
   "dependencies": {
     "@alien-worlds/aw-core": "^0.0.21",
-    "mongodb": "4.9.1"
+    "mongodb": "4.17.0"
   }
 }
