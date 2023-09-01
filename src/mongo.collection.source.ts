@@ -273,7 +273,7 @@ export class MongoCollectionSource<T extends Document = Document>
       const failedDocuments = [];
       const duplicatedIds = getDuplicatedDocumentIds(error);
       if (error.writeErrors) {
-        if (options.ordered) {
+        if (options.ordered && error.writeErrors.length === 1) {
           const failedIndex = error.writeErrors[0].index;
           failedDocuments.push(documents[failedIndex]);
           insertedDocuments.push(...documents.slice(0, failedIndex));
