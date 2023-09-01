@@ -126,7 +126,7 @@ export const isDuplicateError = (error: Error): boolean => {
  * @param {Error} error - The error to extract from.
  * @returns {string[]} An array of duplicated data IDs.
  */
-export const getDuplicatedDataIds = (error: Error): string[] => {
+export const getDuplicatedDocumentIds = (error: Error): string[] => {
   const errorMessage = error.message || '';
   const matches = errorMessage.match(/"([^"]+)"/g);
   if (matches) {

@@ -1,6 +1,7 @@
 import { UpdateMethod } from '@alien-worlds/aw-core';
 import {
   AggregateOptions,
+  BulkWriteOptions,
   CountDocumentsOptions,
   DeleteOptions,
   Filter,
@@ -39,6 +40,11 @@ export type MongoCountQueryParams<T = unknown> = {
 export type MongoDeleteQueryParams<T = unknown> = {
   filter: Filter<T>;
   options?: DeleteOptions;
+};
+
+export type MongoInsertQueryParams<T = unknown> = {
+  documents: T[];
+  options?: BulkWriteOptions;
 };
 
 export type MongoConfig = {

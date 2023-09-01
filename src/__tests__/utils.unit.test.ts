@@ -5,7 +5,7 @@ import {
   containsSpecialKeys,
   isMongoConfig,
   isDuplicateError,
-  getDuplicatedDataIds,
+  getDuplicatedDocumentIds,
   isInvalidDataError,
   isBulkUpdate,
 } from '../utils';
@@ -108,7 +108,7 @@ describe('getDuplicatedDataIds', () => {
     const error = new Error(
       'E11000 duplicate key error collection: test.collection index: _id_ dup key: { _id: "duplicatedId" }'
     );
-    const ids = getDuplicatedDataIds(error);
+    const ids = getDuplicatedDocumentIds(error);
     expect(ids).toEqual(['duplicatedId']);
   });
 });

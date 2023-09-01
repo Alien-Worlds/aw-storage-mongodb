@@ -39,7 +39,7 @@ describe('MongoWhereParser', () => {
     });
 
     it('should parse Where object bound to the class', () => {
-      const where = Where.bind<UserMockClass>().props().name.isEq('Neo');
+      const where = Where.bind<UserMockClass>().prototype().name.isEq('Neo');
       const result = MongoWhereParser.parse(where);
 
       expect(result).toEqual({
@@ -48,7 +48,7 @@ describe('MongoWhereParser', () => {
     });
 
     it('should parse Where object and use mapper', () => {
-      const where = Where.bind<UserMockClass>().props().cardId.isEq(10);
+      const where = Where.bind<UserMockClass>().prototype().cardId.isEq(10);
       const mapper = {
         getEntityKeyMapping: (key: string) => ({
           key: 'card_id',

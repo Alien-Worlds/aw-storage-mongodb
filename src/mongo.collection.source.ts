@@ -9,6 +9,7 @@ import {
 } from '@alien-worlds/aw-core';
 import {
   AnyBulkWriteOperation,
+  BulkWriteOptions,
   ClientSession,
   Collection,
   Document,
@@ -26,10 +27,11 @@ import {
   MongoCountQueryParams,
   MongoDeleteQueryParams,
   MongoFindQueryParams,
+  MongoInsertQueryParams,
   MongoUpdateQueryParams,
 } from './mongo.types';
 import {
-  getDuplicatedDataIds,
+  getDuplicatedDocumentIds,
   isBulkUpdate,
   isDuplicateError,
   isInvalidDataError,
@@ -109,18 +111,24 @@ export class MongoCollectionSource<T extends Document = Document>
    * Throws a DataSourceError based on the provided error.
    * @private
    * @param {Error} error - The original error.
+   * @param options
    * @returns {void}
    * @throws {DataSourceError} - The DataSourceError with the appropriate error type.
    */
-  private throwDataSourceError(error: Error) {
+  private throwDataSourceError(
+    error: Error,
+    options?: {
+      duplicatedIds: string[];
+      insertedDocuments: T[];
+      failedDocuments: T[];
+    }
+  ) {
     if (isDuplicateError(error)) {
-      throw DataSourceError.createDuplicateError(error, {
-        data: getDuplicatedDataIds(error),
-      });
+      throw DataSourceError.createDuplicateError(error, options);
     }
 
     if (isInvalidDataError(error)) {
-      throw DataSourceError.createInvalidDataError(error);
+      throw DataSourceError.createInvalidDataError(error, options);
     }
 
     throw DataSourceError.createError(error);
@@ -235,20 +243,61 @@ export class MongoCollectionSource<T extends Document = Document>
 
   /**
    * Inserts documents into the collection.
-   * @param {OptionalUnlessRequiredId<T>[]} query - The documents to insert.
+   * @param {OptionalUnlessRequiredId<T>[] | MongoInsertQueryParams<T>} query - The documents to insert.
    * @returns {Promise<T[]>} - A promise that resolves to the inserted documents.
    */
-  public async insert(query: OptionalUnlessRequiredId<T>[]): Promise<T[]> {
+  public async insert(
+    query: OptionalUnlessRequiredId<T>[] | MongoInsertQueryParams<T>
+  ): Promise<T[]> {
+    const options: BulkWriteOptions = { ordered: true };
+    const documents = [];
     try {
-      const insertResult = await this.collection.insertMany(query);
-      const insertedDocuments = query.map((document, index) => ({
+      if (Array.isArray(query)) {
+        documents.push(...query);
+      } else {
+        documents.push(...query.documents);
+        if (query.options) {
+          Object.assign(options, query.options);
+        }
+      }
+
+      const insertResult = await this.collection.insertMany(documents, options);
+      const insertedDocuments = documents.map((document, index) => ({
         _id: insertResult.insertedIds[index],
         ...document,
       }));
 
       return insertedDocuments as T[];
     } catch (error) {
-      this.throwDataSourceError(error);
+      const insertedDocuments = [];
+      const failedDocuments = [];
+      const duplicatedIds = getDuplicatedDocumentIds(error);
+      if (error.writeErrors) {
+        if (options.ordered) {
+          const failedIndex = error.writeErrors[0].index;
+          failedDocuments.push(documents[failedIndex]);
+          insertedDocuments.push(...documents.slice(0, failedIndex));
+        } else {
+          const failedIndices = new Set();
+          for (const writeError of error.writeErrors) {
+            const failedIndex = writeError.index;
+            failedDocuments.push(documents[failedIndex]);
+            failedIndices.add(failedIndex);
+          }
+
+          for (let i = 0; i < documents.length; i++) {
+            if (!failedIndices.has(i)) {
+              insertedDocuments.push(documents[i]);
+            }
+          }
+        }
+      }
+
+      this.throwDataSourceError(error, {
+        duplicatedIds,
+        insertedDocuments,
+        failedDocuments,
+      });
     }
   }
 

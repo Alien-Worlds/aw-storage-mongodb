@@ -431,16 +431,12 @@ describe('MongoCollectionSource', () => {
       (isDuplicateError as jest.Mock).mockReturnValue(true);
       const createDuplicateErrorSpy = jest.spyOn(DataSourceError, 'createDuplicateError');
       createDuplicateErrorSpy.mockReturnValue(
-        DataSourceError.createDuplicateError(error, {
-          data: [],
-        })
+        DataSourceError.createDuplicateError(error, {})
       );
       expect(() => {
         (mongoCollectionSource as any).throwDataSourceError(error);
       }).toThrow(DataSourceError);
-      expect(createDuplicateErrorSpy).toHaveBeenCalledWith(error, {
-        data: [],
-      });
+      expect(createDuplicateErrorSpy).toHaveBeenCalledWith(error, {});
     });
 
     it('should throw a DataSourceError for invalid data error', () => {
